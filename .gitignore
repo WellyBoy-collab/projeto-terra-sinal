@@ -1,0 +1,24 @@
+# .NET build artifacts
+**/bin/
+**/obj/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local configuration and secrets
+.env
+.env.*
+!*.example
+appsettings.Development.json
+appsettings.Local.json
+
+# Runtime/generated data
+**/App_Data/
+*.db
+*.sqlite
+*.sqlite3
+
+# OS/editor files
+.DS_Store
+Thumbs.db

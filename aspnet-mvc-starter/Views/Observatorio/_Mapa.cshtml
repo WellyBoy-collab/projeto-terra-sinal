@@ -1,0 +1,33 @@
+<section class="app-view" data-view="mapa" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">CARTOGRAFIA / BÚZI × MUANZA</span>
+      <h2>O stress tem localização</h2>
+    </div>
+    <div class="map-layer-select">
+      <span>CAMADA</span>
+      <select class="form-select" id="mapLayer">
+        <option value="stress">Classe prevista</option>
+        <option value="ndvi">Anomalia NDVI (z)</option>
+        <option value="rain">Anomalia de chuva (z)</option>
+      </select>
+    </div>
+  </div>
+  <div class="map-layout">
+    <div class="panel map-large-card">
+      <div class="map-large" id="largeMap"><div class="map-fallback">A carregar mapa…</div></div>
+      <div class="map-legend map-legend-large">
+        <span><i class="legend-dot healthy"></i> Normal / z ≥ −0,5</span>
+        <span><i class="legend-dot moderate"></i> Moderado / −1 ≤ z &lt; −0,5</span>
+        <span><i class="legend-dot severe"></i> Severo / z &lt; −1</span>
+        <span><i class="legend-dot" style="background:#b9c2bb"></i> Sem dados</span>
+      </div>
+    </div>
+    <aside class="panel map-side">
+      <span class="section-number">DISTRITOS MONITORIZADOS · <span data-bind="periodText">—</span></span>
+      <h3>Leitura por distrito</h3>
+      <div id="mapSiteList"></div>
+      <p class="small-footnote">Os dados são médias por distrito (limites FAO GAUL nível 2); o marcador indica o centro aproximado do distrito, não um ponto de medição.</p>
+    </aside>
+  </div>
+</section>

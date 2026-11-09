@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TerraSinal.Web</RootNamespace>
+    <!-- Permite correr num PC que só tenha o runtime .NET 9/10 instalado -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Biblioteca de IA (ML.NET + LightGBM) do ProjetoSeca -->
+    <ProjectReference Include="..\Vegetation.ML\Vegetation.ML.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Modelo treinado e dados originais: copiados para bin/ e para o publish -->
+    <None Update="ModeloIA\**\*" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- Dados de execução (modelo activo, dataset importado) não fazem parte do código -->
+    <None Remove="App_Data\**" />
+    <Content Remove="App_Data\**" />
+  </ItemGroup>
+</Project>

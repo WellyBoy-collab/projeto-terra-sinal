@@ -1,0 +1,51 @@
+<section class="app-view" data-view="recomendacoes" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">APOIO À DECISÃO / EXPLICABILIDADE</span>
+      <h2>Da classe à acção</h2>
+      <p>Recomendações explícitas, verificáveis e auditáveis.</p>
+    </div>
+    <span class="decision-disclaimer"><i class="bi bi-person-check"></i> Validação humana obrigatória</span>
+  </div>
+  <div class="decision-layout">
+    <article class="panel recommendation-primary">
+      <span class="section-number">RECOMENDAÇÃO ACTUAL · <span data-bind="region">—</span></span>
+      <div class="recommend-class">
+        <span class="recommend-class-icon"><i class="bi bi-exclamation-triangle"></i></span>
+        <div><small>ESTADO PREVISTO DA VEGETAÇÃO</small><h3 data-bind="stressClass">—</h3></div>
+      </div>
+      <p class="recommend-body" data-bind="recommendation">—</p>
+      <div class="recommend-meta">
+        <span><i class="bi bi-shield-check"></i> Regra <b data-bind="ruleId">—</b></span>
+        <span><i class="bi bi-calendar"></i> <span data-bind="periodText">—</span></span>
+        <span><i class="bi bi-cpu"></i> <span data-bind="modelVersion">—</span></span>
+      </div>
+      <label class="note-label" for="decisionNote">NOTA DO INVESTIGADOR (OPCIONAL)</label>
+      <textarea class="form-control" rows="3" id="decisionNote" maxlength="1000" placeholder="Registar observações antes de confirmar a análise..."></textarea>
+      <button type="button" class="decision-button" id="recordDecision"><i class="bi bi-journal-check"></i> Registar análise no histórico</button>
+      <p class="small-footnote">O registo fica na base de dados MySQL com o utilizador, a versão do modelo e as entradas usadas.</p>
+    </article>
+    <article class="panel reasoning-panel">
+      <span class="section-number">COMO SE CHEGOU À RECOMENDAÇÃO</span>
+      <h3>Evidência da classificação</h3>
+      <div class="reason-table">
+        <div><span>Probabilidades (normal / moderado / severo)</span><b data-bind="probText">—</b></div>
+        <div><span>CHIRPS · chuva do mês (z)</span><b><span data-bind="chuvaMm">—</span> mm (<span data-bind="chuvaZ">—</span>)</b></div>
+        <div><span>Chuva T−1 / T−2 / T−3</span><b data-bind="lagsText">—</b></div>
+        <div><span>Sentinel-1 · VV (z) / VH (z)</span><b data-bind="radarZText">—</b></div>
+        <div><span>Sentinel-2 · NDVI (z) → classe observada</span><b data-bind="ndviObsText">—</b></div>
+      </div>
+      <div class="soft-alert">
+        <i class="bi bi-stars"></i>
+        <div>
+          <strong>Como ler</strong>
+          <p>A classe vem do modelo LightGBM (ML.NET) treinado com anomalias de chuva e radar; a recomendação vem de uma regra determinística (R01–R03). Quando há NDVI fiável, a classe observada permite confirmar a previsão.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="panel rules-panel">
+    <div class="panel-heading"><div><span class="section-number">MOTOR DE REGRAS / V2</span><h3>Três classes. Três protocolos.</h3></div></div>
+    <div class="rules-grid rules-grid-3" id="rulesGrid"></div>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+<section class="app-view" data-view="historico" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">AUDITORIA / RASTREABILIDADE</span>
+      <h2>Cada recomendação deixa um rasto</h2>
+      <p>Previsões registadas e análises revistas por investigadores (MySQL).</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn-outline-main" id="refreshHistory" type="button"><i class="bi bi-arrow-clockwise"></i> Actualizar</button>
+      <button class="btn-outline-main" id="exportHistory" type="button"><i class="bi bi-download"></i> Exportar histórico</button>
+    </div>
+  </div>
+  <article class="panel history-panel">
+    <div class="history-head">
+      <div><span class="section-number">REGISTOS E VERSÕES</span><h3>Actividade recente</h3></div>
+      <span class="pill pill-neutral" id="historyCount">0 registos</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table history-table">
+        <thead><tr><th>DATA / PERÍODO</th><th>REGIÃO</th><th>PREVISTA</th><th>OBSERVADA</th><th>CONF.</th><th>REGRA</th><th>MODELO</th><th>ESTADO</th><th>UTILIZADOR / NOTA</th></tr></thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+    <p class="small-footnote">Os registos são gravados na tabela <code>RegistosPrevisao</code> com a versão do modelo e as entradas usadas (JSON).</p>
+  </article>
+</section>

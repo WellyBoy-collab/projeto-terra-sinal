@@ -1,0 +1,99 @@
+@{ var isAdmin = User.IsInRole("Administrador"); }
+<section class="app-view" data-view="modelos" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">CIÊNCIA DE DADOS / IA</span>
+      <h2>Transparência antes da previsão</h2>
+      <p>Modelo treinado no ProjetoSeca (ML.NET + LightGBM), avaliado com separação temporal por anos.</p>
+    </div>
+    <span class="pill pill-neutral" id="aiStatusPill">A verificar…</span>
+  </div>
+
+  <article class="panel model-active">
+    <div class="model-top">
+      <div>
+        <span class="model-tag">MODELO ACTIVO · <span id="aiActive">—</span></span>
+        <h3 class="mb-1">Classificador de stress da vegetação</h3>
+        <p class="body-secondary mb-0">Versão <b id="aiVer">—</b> · treinado em <span id="aiTrainedAt">—</span> · treino até <b id="aiLastYear">—</b> (<span id="aiRows">—</span>)</p>
+      </div>
+      @if (isAdmin)
+      {
+        <button class="btn-outline-main" type="button" id="trainBtn"><i class="bi bi-arrow-repeat"></i> Retreinar com o dataset actual</button>
+      }
+      else
+      {
+        <span class="pill pill-neutral"><i class="bi bi-lock"></i> Treino reservado ao administrador</span>
+      }
+    </div>
+    <div class="metric-row">
+      <div><small>EXATIDÃO (TESTE)</small><b id="aiAcc">—</b></div>
+      <div><small>PRECISÃO (MACRO)</small><b id="aiPrec">—</b></div>
+      <div><small>RECALL (MACRO)</small><b id="aiRec">—</b></div>
+      <div><small>F1 (MACRO)</small><b id="aiF1">—</b></div>
+    </div>
+  </article>
+
+  <div class="model-cards model-cards-3" id="modelCards"></div>
+
+  <div class="model-bottom">
+    <article class="panel">
+      <span class="section-number">AVALIAÇÃO DO MODELO</span>
+      <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+        <h3>Matriz de confusão (anos de teste)</h3>
+        <select class="form-select form-select-sm w-auto" id="cmModelSelect" aria-label="Modelo da matriz"></select>
+      </div>
+      <p class="body-secondary">Linhas = classe real (pelo NDVI); colunas = classe prevista.</p>
+      <div class="confusion-wrap">
+        <table class="confusion" id="aiConfusionTable">
+          <thead><tr><th></th><th>Normal</th><th>Moderado</th><th>Severo</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm per-class-table" id="perClassTable">
+          <thead><tr><th>Classe</th><th>Precisão</th><th>Recall</th><th>F1</th><th>n</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="small-footnote">Com poucos meses de stress no período de teste, as métricas por classe são instáveis. A referência «sempre normal» mostra porque a exatidão sozinha engana: o critério de escolha foi o F1-macro.</p>
+    </article>
+
+    <article class="panel">
+      <span class="section-number">PREVER COM O MODELO</span>
+      <h3>Nova previsão</h3>
+      <p class="body-secondary">Use os dados do período seleccionado, ou introduza valores de um mês novo (ex.: dados de 2026 ainda não importados).</p>
+      <div class="predict-actions">
+        <button class="btn-main decision-button" type="button" id="aiVerifyBtn"><i class="bi bi-cloud-check"></i> Prever <span data-bind="region">—</span> · <span data-bind="periodText">—</span> e registar</button>
+      </div>
+      <form id="manualPredictForm" class="predict-form" autocomplete="off">
+        <div class="row g-2">
+          <div class="col-6"><label class="field-label" for="mpRegion">DISTRITO</label><select id="mpRegion" class="form-select form-select-sm"><option value="Buzi">Búzi</option><option value="Muanza">Muanza</option></select></div>
+          <div class="col-6"><label class="field-label" for="mpPeriod">MÊS (AAAA-MM)</label><input id="mpPeriod" class="form-control form-control-sm" type="month" required></div>
+          <div class="col-6"><label class="field-label" for="mpRain">CHUVA DO MÊS (mm)</label><input id="mpRain" class="form-control form-control-sm" type="number" step="0.1" min="0" required></div>
+          <div class="col-6"><label class="field-label" for="mpLag1">CHUVA T−1 (mm)</label><input id="mpLag1" class="form-control form-control-sm" type="number" step="0.1" min="0" required></div>
+          <div class="col-6"><label class="field-label" for="mpLag2">CHUVA T−2 (mm)</label><input id="mpLag2" class="form-control form-control-sm" type="number" step="0.1" min="0" required></div>
+          <div class="col-6"><label class="field-label" for="mpLag3">CHUVA T−3 (mm)</label><input id="mpLag3" class="form-control form-control-sm" type="number" step="0.1" min="0" required></div>
+          <div class="col-6"><label class="field-label" for="mpVv">RADAR VV (dB)</label><input id="mpVv" class="form-control form-control-sm" type="number" step="0.01" min="-40" max="10" required></div>
+          <div class="col-6"><label class="field-label" for="mpVh">RADAR VH (dB)</label><input id="mpVh" class="form-control form-control-sm" type="number" step="0.01" min="-45" max="10" required></div>
+        </div>
+        <div class="d-flex gap-2 mt-3 flex-wrap">
+          <button class="btn-outline-main" type="button" id="mpFill"><i class="bi bi-magic"></i> Preencher com o período seleccionado</button>
+          <button class="decision-button w-auto" type="submit"><i class="bi bi-cpu"></i> Prever valores introduzidos</button>
+        </div>
+      </form>
+      <div id="aiVerifyResult" class="predict-result" aria-live="polite"></div>
+    </article>
+  </div>
+
+  <article class="panel mt-3">
+    <span class="section-number">GOVERNANÇA DO MODELO</span>
+    <h3>Metodologia (fixada antes de ver o teste)</h3>
+    <div class="science-steps science-steps-grid">
+      <div><i class="bi bi-flower1"></i><span><b>Classe real</b><small>z do NDVI face ao normal do mês e distrito: &lt; −1 severo, &lt; −0,5 moderado, resto normal</small></span></div>
+      <div><i class="bi bi-check-circle"></i><span><b>Features (9)</b><small>Distrito, mês (seno/cosseno), z da chuva do mês e dos 3 anteriores, z de VV e VH</small></span></div>
+      <div><i class="bi bi-clock-history"></i><span><b>Separação temporal</b><small>Normais e treino só com anos até <span id="govLastYear">—</span>; os 2 anos seguintes são teste</small></span></div>
+      <div><i class="bi bi-funnel"></i><span><b>Qualidade</b><small>2018 excluído; meses com &lt; 50% de pixels NDVI válidos não entram</small></span></div>
+      <div><i class="bi bi-journal-text"></i><span><b>Rastreabilidade</b><small>Cada previsão registada guarda versão, entradas, utilizador e data</small></span></div>
+    </div>
+  </article>
+</section>

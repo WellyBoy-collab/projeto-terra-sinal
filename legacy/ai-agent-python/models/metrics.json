@@ -1,0 +1,51 @@
+{
+  "accuracy": 0.9850746268656716,
+  "precision_macro": 0.9852941176470589,
+  "recall_macro": 0.9850980392156863,
+  "f1_macro": 0.9851470441161764,
+  "confusion_matrix": [
+    [
+      49,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      49,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      50,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      50
+    ]
+  ],
+  "classes": [
+    "Saudável",
+    "Ligeiro",
+    "Moderado",
+    "Severo"
+  ],
+  "feature_importances": {
+    "ndvi": 0.14851008639986268,
+    "ndviAnomaly": 0.24617230753420855,
+    "rainfall": 0.1349090774627607,
+    "rainAnomaly": 0.13929761629721318,
+    "soilMoisture": 0.12151628874618557,
+    "rainLag": 0.08446799069940883,
+    "soilLag": 0.12512663286036052
+  },
+  "n_train": 602,
+  "n_test": 201,
+  "model_type": "RandomForestClassifier",
+  "version": "v1.0-python-weather-agent"
+}

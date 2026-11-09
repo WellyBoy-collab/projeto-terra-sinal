@@ -1,0 +1,100 @@
+<section class="app-view is-visible" data-view="dashboard">
+  <div class="section-header">
+    <div>
+      <span class="section-number">01 / LEITURA INTEGRADA</span>
+      <h2>Um retrato do território</h2>
+    </div>
+    <span class="update-stamp"><i class="bi bi-calendar3"></i> Período: <b data-bind="periodText">—</b> · <span data-bind="conjunto">—</span></span>
+  </div>
+
+  <div class="kpi-grid">
+    <article class="kpi-card kpi-ndvi">
+      <div class="kpi-top"><span>ÍNDICE DE VEGETAÇÃO</span><i class="bi bi-flower2"></i></div>
+      <div class="kpi-value" data-bind="ndvi">—</div>
+      <div class="kpi-bottom"><span>NDVI · Sentinel-2</span><span class="pill pill-amber">z <b data-bind="ndviZ">—</b></span></div>
+      <div class="kpi-bottom mt-1"><span>Cobertura <b data-bind="cobertura">—</b></span><span>Classe obs.: <b data-bind="classeObservada">—</b></span></div>
+    </article>
+    <article class="kpi-card">
+      <div class="kpi-top"><span>PRECIPITAÇÃO</span><i class="bi bi-cloud-rain"></i></div>
+      <div class="kpi-value"><span data-bind="chuvaMm">—</span><small>mm</small></div>
+      <div class="kpi-bottom"><span>CHIRPS · total do mês</span><span class="pill pill-neutral">z <b data-bind="chuvaZ">—</b></span></div>
+      <div class="card-progress"><span id="rainBar" style="width:0%"></span></div>
+    </article>
+    <article class="kpi-card">
+      <div class="kpi-top"><span>RADAR (HUMIDADE SUPERFICIAL)</span><i class="bi bi-broadcast"></i></div>
+      <div class="kpi-value"><span data-bind="vv">—</span><small>dB VV</small></div>
+      <div class="kpi-bottom"><span>Sentinel-1 · VH <b data-bind="vh">—</b> dB</span><span class="pill pill-neutral">z <b data-bind="vvZ">—</b></span></div>
+      <div class="card-progress soil-progress"><span id="radarBar" style="width:0%"></span></div>
+    </article>
+    <article class="kpi-card kpi-stress">
+      <div class="kpi-top"><span>PREVISÃO DO MODELO (ML.NET)</span><i class="bi bi-hexagon-half"></i></div>
+      <div class="kpi-value kpi-class"><span data-bind="stressClass">—</span></div>
+      <div class="kpi-bottom"><span>Confiança <b data-bind="confianca">—</b></span><span class="pill pill-priority" id="stressPill"><i class="bi bi-cpu"></i> <span data-bind="modelVersion">—</span></span></div>
+      <div class="prob-bars" id="probBars"></div>
+    </article>
+  </div>
+
+  <div class="dash-grid">
+    <article class="panel panel-map">
+      <div class="panel-heading">
+        <div>
+          <span class="section-number">02 / GEOGRAFIA</span>
+          <h3>Leitura espacial do stress</h3>
+          <p>Classe prevista pelo modelo para cada distrito no período seleccionado.</p>
+        </div>
+        <button class="link-action" data-navigate="mapa" type="button">Ver mapa completo <i class="bi bi-arrow-up-right"></i></button>
+      </div>
+      <div class="map-viewport map-mini" id="dashboardMap"><div class="map-fallback">A carregar mapa…</div></div>
+      <div class="map-legend">
+        <span><i class="legend-dot healthy"></i> Normal</span>
+        <span><i class="legend-dot moderate"></i> Moderado</span>
+        <span><i class="legend-dot severe"></i> Severo</span>
+        <span><i class="legend-dot" style="background:#b9c2bb"></i> Sem previsão</span>
+      </div>
+    </article>
+    <article class="panel decision-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="section-number">03 / SUPORTE À DECISÃO</span>
+          <h3>Leitura explicável</h3>
+          <p>Classe prevista, evidências e acção sugerida.</p>
+        </div>
+        <span class="ai-symbol"><i class="bi bi-stars"></i></span>
+      </div>
+      <div class="decision-condition">
+        <small>PREVISÃO · <span data-bind="ruleId">—</span></small>
+        <strong data-bind="stressClass">—</strong>
+        <p data-bind="recommendation">—</p>
+      </div>
+      <div class="evidence-list">
+        <div><i class="bi bi-flower2"></i><span>NDVI / anomalia (z)</span><b data-bind="ndviEvidence">—</b></div>
+        <div><i class="bi bi-cloud-rain"></i><span>Chuva mês / mês anterior</span><b data-bind="rainEvidence">—</b></div>
+        <div><i class="bi bi-broadcast"></i><span>Radar VV / VH</span><b data-bind="radarEvidence">—</b></div>
+        <div><i class="bi bi-check2-square"></i><span>Classe observada (NDVI)</span><b data-bind="classeObservada">—</b></div>
+      </div>
+      <button class="decision-button" data-navigate="recomendacoes" type="button">Consultar e registar análise <i class="bi bi-arrow-right"></i></button>
+    </article>
+  </div>
+
+  <div class="dash-bottom">
+    <article class="panel mini-trends">
+      <div class="panel-heading">
+        <div>
+          <span class="section-number">04 / VARIAÇÃO TEMPORAL</span>
+          <h3>Três sinais, uma tendência (últimos 24 meses)</h3>
+        </div>
+        <button data-navigate="temporal" type="button" class="link-action">Explorar séries <i class="bi bi-arrow-up-right"></i></button>
+      </div>
+      <div class="chart-area"><canvas id="dashboardChart" aria-label="Anomalias de NDVI, chuva e radar" role="img"></canvas></div>
+      <p class="small-footnote">Anomalias (z-scores) face ao normal de cada mês, calculado só com os anos de treino. 0 = normal; −1 = um desvio-padrão abaixo.</p>
+    </article>
+    <article class="panel source-panel">
+      <div class="panel-heading"><div><span class="section-number">05 / RASTREABILIDADE</span><h3>Origem dos indicadores</h3></div></div>
+      <div class="source-item"><span class="source-icon source-green"><i class="bi bi-flower2"></i></span><span><b>Sentinel-2 · NDVI</b><small>Média mensal por distrito (máscara de nuvens SCL) — define a classe observada</small></span></div>
+      <div class="source-item"><span class="source-icon source-blue"><i class="bi bi-broadcast"></i></span><span><b>Sentinel-1 · VV/VH</b><small>Retrodifusão radar (dB), sensível à humidade da superfície</small></span></div>
+      <div class="source-item"><span class="source-icon source-gold"><i class="bi bi-cloud-drizzle"></i></span><span><b>CHIRPS</b><small>Chuva do mês e dos 3 meses anteriores (lags)</small></span></div>
+      <ul class="notes-list" id="obsNotes"></ul>
+      <div class="source-note"><i class="bi bi-exclamation-circle"></i> Dados mensais extraídos no Google Earth Engine (scripts em earth-engine/). A previsão usa só chuva e radar; o NDVI serve para verificar.</div>
+    </article>
+  </div>
+</section>

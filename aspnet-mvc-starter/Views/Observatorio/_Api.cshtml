@@ -1,0 +1,53 @@
+<section class="app-view" data-view="api" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">ASP.NET CORE / WEB API + ML.NET</span>
+      <h2>Front-end, backend e modelo no mesmo processo .NET</h2>
+      <p>Contratos REST activos. Todos exigem sessão iniciada (cookie Identity); os POST exigem o token antiforgery.</p>
+    </div>
+    <span class="pill pill-green">API LIGADA · MODELO ML.NET</span>
+  </div>
+  <div class="integration-grid">
+    <article class="panel api-table-panel">
+      <span class="section-number">CONTRATOS REST ACTIVOS</span>
+      <h3>Endpoints da plataforma</h3>
+      <div class="table-responsive">
+        <table class="table api-table">
+          <thead><tr><th>MÉTODO</th><th>ROTA</th><th>OBJECTIVO</th></tr></thead>
+          <tbody>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/regions</code></td><td>Distritos (Buzi, Muanza)</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/periods?region=</code></td><td>Meses disponíveis (AAAA-MM)</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/observations?region=&amp;period=</code></td><td>Indicadores, anomalias, classe observada e previsão</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/observations?region=</code></td><td>Série completa com previsões</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/observations/sites?period=</code></td><td>Marcadores por distrito</td></tr>
+            <tr><td><span class="http-post">POST</span></td><td><code>/api/predictions</code></td><td>Prever (dataset ou valores manuais); <code>save:true</code> regista</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/predictions/history</code></td><td>Histórico auditável (MySQL)</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/recommendations</code></td><td>Regras R01–R03</td></tr>
+            <tr><td><span class="http-post">POST</span></td><td><code>/api/recommendations/review</code></td><td>Registar análise humana com nota</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/models/status</code></td><td>Estado do modelo e do dataset</td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/models/metrics</code></td><td>Métricas de teste dos 3 modelos</td></tr>
+            <tr><td><span class="http-post">POST</span></td><td><code>/api/models/train</code></td><td>Retreinar · <b>Administrador</b></td></tr>
+            <tr><td><span class="http-get">GET</span></td><td><code>/api/datasets/current</code></td><td>Descarregar dados_unidos.csv</td></tr>
+            <tr><td><span class="http-post">POST</span></td><td><code>/api/datasets/import</code></td><td>Importar CSV · <b>Administrador</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+    <article class="panel integration-side">
+      <span class="section-number">ESTRUTURA DE INTEGRAÇÃO</span>
+      <h3>Arquitectura actual</h3>
+      <div class="architecture-list">
+        <div><i class="bi bi-window"></i><span><b>ASP.NET Core MVC / Razor</b><small>Views, layout, Bootstrap, Chart.js e Leaflet</small></span></div>
+        <div><i class="bi bi-braces"></i><span><b>ASP.NET Core Web API</b><small>ObservatorioApiController · ProblemDetails · antiforgery</small></span></div>
+        <div><i class="bi bi-cpu"></i><span><b>Vegetation.ML (ML.NET 5 + LightGBM)</b><small>Biblioteca do ProjetoSeca referenciada pelo projecto web; modelo carregado em memória</small></span></div>
+        <div><i class="bi bi-database"></i><span><b>Entity Framework Core + MySQL</b><small>Identity e histórico de previsões (RegistosPrevisao)</small></span></div>
+        <div><i class="bi bi-person-lock"></i><span><b>ASP.NET Core Identity</b><small>Roles Administrador e Investigador aplicadas no servidor</small></span></div>
+        <div><i class="bi bi-globe2"></i><span><b>Google Earth Engine</b><small>Extracção mensal de Sentinel-2, Sentinel-1 e CHIRPS (earth-engine/)</small></span></div>
+      </div>
+      <div class="soft-alert">
+        <i class="bi bi-code-slash"></i>
+        <span>O adaptador JavaScript (<code>TERRA_API</code>) chama o ASP.NET; o serviço <code>ServicoModeloStress</code> usa <code>PrevisorStress</code> para classificar e <code>Treinador</code> para retreinar — sem serviços externos.</span>
+      </div>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+/* TERRA.SINAL — componentes da integração com o modelo ML.NET */
+.prob-bars{display:flex;flex-direction:column;gap:5px;margin-top:12px}
+.prob-bar{position:relative;height:16px;background:#f1efe9;border-radius:5px;overflow:hidden}
+.prob-bar>span{position:absolute;inset:0 auto 0 0;border-radius:5px;opacity:.85}
+.prob-bar>small{position:relative;z-index:1;font-size:9.5px;font-weight:800;color:#30463a;padding-left:7px;line-height:16px}
+.kpi-stress .prob-bars{margin-top:8px}
+.notes-list{margin:12px 0 0;padding-left:18px;font-size:11px;line-height:1.6;color:#667e6e}
+.notes-list li{margin-bottom:3px}
+.data-status.status-ok{color:#3f7550;background:#eef6ee;border-color:#d5e8d4}
+.model-active{margin-bottom:17px;border-color:#cfe1cc;background:#fcfefb}
+.model-active .model-top{align-items:flex-start;flex-wrap:wrap}
+.model-cards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.model-cards-3 .model-card h3{font-size:18px}
+.rules-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.confusion .heat-off{background:#f7e3d9;color:#a5614a}
+.per-class-table{font-size:11px;margin-top:10px}
+.per-class-table th{font-size:9px;color:#9bad9f;letter-spacing:.6px}
+.predict-actions{margin:14px 0}
+.predict-form{border-top:1px solid #eef0ec;padding-top:14px}
+.predict-form .field-label{font-size:9px;font-weight:800;letter-spacing:1px;color:#98a49b;margin:6px 0 4px;display:block}
+.predict-result{margin-top:16px}
+.predict-card{background:#f7faf5;border:1px solid #e1eadc;border-radius:12px;padding:14px;font-size:12px;color:#3e5848}
+.decision-button.w-auto{width:auto}
+.science-steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 22px}
+.history-table td small{color:#9aa69b}
+@media(max-width:840px){.model-cards-3,.rules-grid-3{grid-template-columns:1fr!important}}
+.model-cards-3 .metric-row{grid-template-columns:repeat(2,1fr)}

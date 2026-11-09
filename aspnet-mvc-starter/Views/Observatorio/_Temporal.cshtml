@@ -1,0 +1,43 @@
+<section class="app-view" data-view="temporal" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">SÉRIES TEMPORAIS / 2018–<span id="lastYear">2025</span></span>
+      <h2>A resposta da vegetação</h2>
+      <p>NDVI, chuva e radar mês a mês — e a previsão do modelo comparada com a classe observada.</p>
+    </div>
+    <span class="pill pill-green">DADOS REAIS · GOOGLE EARTH ENGINE</span>
+  </div>
+  <div class="trends-grid">
+    <article class="panel trend-card">
+      <div class="chart-head"><span class="source-icon source-green"><i class="bi bi-flower2"></i></span><div><small>01 · SENTINEL-2</small><h3>NDVI e anomalia (z)</h3></div></div>
+      <div class="chart-area chart-tall"><canvas id="ndviChart"></canvas></div>
+    </article>
+    <article class="panel trend-card">
+      <div class="chart-head"><span class="source-icon source-gold"><i class="bi bi-cloud-rain"></i></span><div><small>02 · CHIRPS</small><h3>Precipitação mensal (mm)</h3></div></div>
+      <div class="chart-area chart-tall"><canvas id="rainChart"></canvas></div>
+    </article>
+    <article class="panel trend-card">
+      <div class="chart-head"><span class="source-icon source-blue"><i class="bi bi-broadcast"></i></span><div><small>03 · SENTINEL-1</small><h3>Radar VV e VH (dB)</h3></div></div>
+      <div class="chart-area chart-tall"><canvas id="soilChart"></canvas></div>
+    </article>
+    <article class="panel trend-card">
+      <div class="chart-head"><span class="source-icon source-green"><i class="bi bi-cpu"></i></span><div><small>04 · ML.NET</small><h3>Classe prevista vs observada</h3></div></div>
+      <div class="chart-area chart-tall"><canvas id="classChart"></canvas></div>
+      <p class="small-footnote">0 = normal · 1 = moderado · 2 = severo. A classe observada só existe quando há NDVI com cobertura ≥ 50%.</p>
+    </article>
+    <article class="panel lag-panel">
+      <span class="section-number">EFEITO DE ATRASO / LAG</span>
+      <h3>A chuva dos meses anteriores ajuda a explicar o NDVI de hoje?</h3>
+      <p>O modelo recebe a anomalia de chuva do mês e dos três meses anteriores, porque a vegetação responde com atraso. Valores de <b data-bind="periodText">—</b>:</p>
+      <div class="lag-grid">
+        <div><small>CHUVA DO MÊS</small><b><span data-bind="chuvaMm">—</span> mm</b></div>
+        <i class="bi bi-arrow-left-right"></i>
+        <div><small>CHUVA T−1</small><b><span data-bind="chuvaLag1">—</span> mm</b></div>
+        <div><small>CHUVA T−2</small><b><span data-bind="chuvaLag2">—</span> mm</b></div>
+        <i class="bi bi-arrow-left-right"></i>
+        <div><small>CHUVA T−3</small><b><span data-bind="chuvaLag3">—</span> mm</b></div>
+      </div>
+      <div class="soft-alert"><i class="bi bi-info-circle"></i> Correlação temporal não equivale a causalidade. O desempenho foi medido em anos de teste que o modelo não viu no treino.</div>
+    </article>
+  </div>
+</section>

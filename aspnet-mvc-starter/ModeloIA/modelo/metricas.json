@@ -1,0 +1,145 @@
+{
+  "Versao": "v20261108-132623",
+  "TreinadoEmUtc": "2026-11-08T13:26:23.5739605Z",
+  "UltimoAnoTreino": 2023,
+  "LinhasTreino": 120,
+  "LinhasTeste": 46,
+  "ModeloAtivo": "LightGBM",
+  "Metricas": [
+    {
+      "Nome": "Refer\u00EAncia (sempre normal)",
+      "Exatidao": 0.8260869565217391,
+      "F1Macro": 0.30158730158730157,
+      "PorClasse": [
+        {
+          "Classe": "normal",
+          "Precisao": 0.8260869565217391,
+          "Recall": 1,
+          "F1": 0.9047619047619048,
+          "Suporte": 38
+        },
+        {
+          "Classe": "moderado",
+          "Precisao": 0,
+          "Recall": 0,
+          "F1": 0,
+          "Suporte": 1
+        },
+        {
+          "Classe": "severo",
+          "Precisao": 0,
+          "Recall": 0,
+          "F1": 0,
+          "Suporte": 7
+        }
+      ],
+      "Matriz": [
+        [
+          38,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          7,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "Nome": "Regress\u00E3o log\u00EDstica",
+      "Exatidao": 0.8913043478260869,
+      "F1Macro": 0.5127572016460905,
+      "PorClasse": [
+        {
+          "Classe": "normal",
+          "Precisao": 0.8837209302325582,
+          "Recall": 1,
+          "F1": 0.9382716049382716,
+          "Suporte": 38
+        },
+        {
+          "Classe": "moderado",
+          "Precisao": 0,
+          "Recall": 0,
+          "F1": 0,
+          "Suporte": 1
+        },
+        {
+          "Classe": "severo",
+          "Precisao": 1,
+          "Recall": 0.42857142857142855,
+          "F1": 0.6,
+          "Suporte": 7
+        }
+      ],
+      "Matriz": [
+        [
+          38,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          3
+        ]
+      ]
+    },
+    {
+      "Nome": "LightGBM com pesos",
+      "Exatidao": 0.7608695652173914,
+      "F1Macro": 0.5355242566510171,
+      "PorClasse": [
+        {
+          "Classe": "normal",
+          "Precisao": 0.9393939393939394,
+          "Recall": 0.8157894736842105,
+          "F1": 0.8732394366197183,
+          "Suporte": 38
+        },
+        {
+          "Classe": "moderado",
+          "Precisao": 0.2,
+          "Recall": 1,
+          "F1": 0.3333333333333333,
+          "Suporte": 1
+        },
+        {
+          "Classe": "severo",
+          "Precisao": 0.375,
+          "Recall": 0.42857142857142855,
+          "F1": 0.4,
+          "Suporte": 7
+        }
+      ],
+      "Matriz": [
+        [
+          31,
+          2,
+          5
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          2,
+          2,
+          3
+        ]
+      ]
+    }
+  ]
+}

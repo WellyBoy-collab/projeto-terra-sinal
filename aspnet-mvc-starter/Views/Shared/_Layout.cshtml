@@ -1,0 +1,41 @@
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{
+  var tokens = Antiforgery.GetAndStoreTokens(Context);
+  var isAdmin = User.IsInRole("Administrador");
+}
+<!doctype html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173e33">
+  <meta name="description" content="TERRA.SINAL — Plataforma de inteligência ambiental e apoio à decisão para Búzi e Muanza. Grupo 03.">
+  <title>TERRA.SINAL | Observatório de Vegetação — Grupo 03</title>
+  <link rel="icon" href="~/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+  <link href="~/assets/css/style.css" rel="stylesheet" asp-append-version="true">
+  <link href="~/assets/css/ml.css" rel="stylesheet" asp-append-version="true">
+</head>
+<body>
+@RenderBody()
+<script>
+  window.TERRA_CONFIG = {
+    useApi: true,
+    baseUrl: @Json.Serialize(Url.Content("~/api")),
+    antiforgeryToken: @Json.Serialize(tokens.RequestToken),
+    isAdmin: @(isAdmin ? "true" : "false"),
+    userName: @Json.Serialize(User.Identity?.Name ?? "")
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="~/assets/js/api-client.js" asp-append-version="true"></script>
+<script src="~/assets/js/app.js" asp-append-version="true"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+@{
+  ViewData["Title"] = "TERRA.SINAL | Grupo 03";
+  var isAdmin = User.IsInRole("Administrador");
+  var nome = User.Identity?.Name ?? "Utilizador";
+}
+<a class="skip-link" href="#mainContent">Saltar para o conteúdo</a>
+<div class="mobile-shade" id="mobileShade"></div>
+<div class="shell">
+  <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+    <div class="brand"><span class="brand-icon"><i class="bi bi-flower2"></i></span><span class="brand-name">TERRA<span>.</span>SINAL<small>INTELIGÊNCIA DA PAISAGEM</small></span></div>
+    <div class="project-label"><span class="project-bullet"></span><div><small>PROJECTO ACADÉMICO · 2026</small><strong>Grupo 03 <em>·</em> Província de Sofala</strong></div></div>
+    <nav class="app-nav" id="sideNav">
+      <span class="nav-section">OBSERVATÓRIO</span>
+      <a href="#inicio" data-page="inicio" class="nav-item"><i class="bi bi-house-door"></i><span>Apresentação</span></a>
+      <a href="#dashboard" data-page="dashboard" class="nav-item is-active"><i class="bi bi-grid-1x2"></i><span>Visão geral</span></a>
+      <a href="#mapa" data-page="mapa" class="nav-item"><i class="bi bi-geo-alt"></i><span>Mapa de stress</span></a>
+      <a href="#temporal" data-page="temporal" class="nav-item"><i class="bi bi-activity"></i><span>Análise temporal</span></a>
+      <a href="#recomendacoes" data-page="recomendacoes" class="nav-item"><i class="bi bi-lightbulb"></i><span>Apoio à decisão</span></a>
+      <span class="nav-section nav-section-lower">CIÊNCIA &amp; ADMINISTRAÇÃO</span>
+      <a href="#modelos" data-page="modelos" class="nav-item"><i class="bi bi-diagram-3"></i><span>Modelo de IA e previsão</span></a>
+      <a href="#dados" data-page="dados" class="nav-item"><i class="bi bi-database-add"></i><span>Dados e importação</span>@if (!isAdmin) {<i class="bi bi-lock admin-mini"></i>}</a>
+      <a href="#historico" data-page="historico" class="nav-item"><i class="bi bi-clock-history"></i><span>Histórico e auditoria</span></a>
+      <a href="#api" data-page="api" class="nav-item"><i class="bi bi-braces"></i><span>API e integração .NET</span></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="landscape-art"><div class="landscape-top"><i class="bi bi-sunrise"></i><span>O território conta<br>uma história.</span></div><svg viewBox="0 0 250 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 79Q37 17 75 54T151 34T250 57V105H0Z" fill="#2f6250"/><path d="M0 91Q45 54 82 73T171 46T250 70V105H0Z" fill="#38745d"/><path d="M0 100Q55 72 106 89T250 80V105H0Z" fill="#64a17a"/></svg></div><span class="sidebar-note">Sentinel-2 NDVI · Sentinel-1 VV/VH · CHIRPS<br>ML.NET · LightGBM · v4.0</span></div>
+  </aside>
+  <div class="main-column">
+    <header class="topbar">
+      <div class="topbar-start">
+        <button class="icon-button mobile-toggle" type="button" id="menuBtn" aria-label="Abrir menu"><i class="bi bi-list"></i></button>
+        <span class="breadcrumb-custom">TERRA.SINAL <i class="bi bi-chevron-right"></i> <b id="crumb">Visão geral</b></span>
+      </div>
+      <div class="topbar-end">
+        <span class="data-status" id="modelStatusBadge"><span></span> A LIGAR AO MODELO…</span>
+        <div class="dropdown">
+          <button class="user-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="user-avatar">@(isAdmin ? "A" : "I")</span>
+            <span>@nome</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><span class="dropdown-item-text small text-muted">@(isAdmin ? "Administrador" : "Investigador")</span></li>
+            <li><a class="dropdown-item small" href="/Account/Profile"><i class="bi bi-person"></i> Perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form asp-controller="Account" asp-action="Logout" method="post" class="px-3">
+                <button type="submit" class="btn btn-sm btn-outline-danger w-100"><i class="bi bi-box-arrow-right"></i> Terminar sessão</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="workspace">
+      <div class="page-top">
+        <div>
+          <div class="eyebrow"><span></span> OBSERVATÓRIO AMBIENTAL · SOFALA</div>
+          <h1 id="pageTitle">Estado da paisagem</h1>
+          <p id="pageSub">Três fontes de observação. Uma leitura integrada do território.</p>
+        </div>
+        <div class="global-filters" id="globalFilters">
+          <label>REGIÃO<select class="form-select" id="regionSelect"><option value="Buzi">Búzi</option><option value="Muanza">Muanza</option></select></label>
+          <label>PERÍODO<select class="form-select" id="periodSelect"><option value="">A carregar…</option></select></label>
+          <button class="export-action" id="exportBtn" type="button" title="Exportar a série do distrito (CSV)"><i class="bi bi-download"></i><span>Exportar</span></button>
+        </div>
+      </div>
+
+      <main id="mainContent">
+        <partial name="~/Views/Observatorio/_Inicio.cshtml" />
+        <partial name="~/Views/Observatorio/_Dashboard.cshtml" />
+        <partial name="~/Views/Observatorio/_Mapa.cshtml" />
+        <partial name="~/Views/Observatorio/_Temporal.cshtml" />
+        <partial name="~/Views/Observatorio/_Recomendacoes.cshtml" />
+        <partial name="~/Views/Observatorio/_Modelos.cshtml" />
+        <partial name="~/Views/Observatorio/_Dados.cshtml" />
+        <partial name="~/Views/Observatorio/_Historico.cshtml" />
+        <partial name="~/Views/Observatorio/_Api.cshtml" />
+      </main>
+      <footer class="site-footer"><span>© 2026 TERRA.SINAL <span class="footer-bar">/</span> Grupo 03 · Programação Web Avançada com .NET</span><span>Apoio à decisão · Não substitui a validação técnica no terreno</span></footer>
+    </div>
+  </div>
+</div>
+<div id="toastArea" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:3000" aria-live="polite"></div>

@@ -1,0 +1,72 @@
+@{ var isAdmin = User.IsInRole("Administrador"); }
+<section class="app-view" data-view="dados" hidden>
+  <div class="section-header">
+    <div>
+      <span class="section-number">INTEGRAÇÃO / QUALIDADE DOS DADOS</span>
+      <h2>Da fonte ao indicador fiável</h2>
+      <p>Importar novos meses extraídos no Google Earth Engine para o dataset do modelo.</p>
+    </div>
+    <span class="admin-header"><i class="bi bi-shield-lock"></i> Acesso administrativo</span>
+  </div>
+  @if (!isAdmin)
+  {
+    <div class="soft-alert admin-gate">
+      <i class="bi bi-shield-lock"></i>
+      <div>
+        <b>Módulo reservado ao perfil Administrador</b>
+        <p>A sua conta é de Investigador. A importação e o retreino são protegidos no servidor com <code>[Authorize(Roles = "Administrador")]</code>. Pode descarregar o dataset actual.</p>
+        <a class="small-button" href="/api/datasets/current"><i class="bi bi-download"></i> Descarregar dataset actual</a>
+      </div>
+    </div>
+  }
+  else
+  {
+    <div class="data-top-grid">
+      <article class="panel import-panel">
+        <span class="section-number">01 / IMPORTAÇÃO</span>
+        <h3>Novo ficheiro de observações</h3>
+        <p class="body-secondary">CSV com o cabeçalho de <code>dados_unidos.csv</code> (saída do script Earth Engine). Linhas existentes (distrito + ano + mês) são substituídas; as novas são acrescentadas.</p>
+        <label class="field-label" for="datasetFile">FICHEIRO CSV</label>
+        <input type="file" class="form-control" id="datasetFile" accept=".csv,text/csv">
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" id="dryRun" checked>
+          <label class="form-check-label small" for="dryRun">Só validar (não gravar)</label>
+        </div>
+        <div class="import-actions">
+          <button id="validateBtn" class="decision-button" type="button"><i class="bi bi-check2-circle"></i> Validar / importar</button>
+          <button id="sampleBtn" class="btn-outline-main" type="button"><i class="bi bi-filetype-csv"></i> Modelo de CSV</button>
+          <a class="btn-outline-main" href="/api/datasets/current"><i class="bi bi-download"></i> Dataset actual</a>
+        </div>
+        <p class="small-footnote">Antes de gravar é feita uma cópia de segurança do dataset. Depois de importar, retreine o modelo em «Modelo de IA» se quiser que os novos meses entrem no treino.</p>
+      </article>
+      <article class="panel pipeline-panel">
+        <span class="section-number">02 / PROCESSAMENTO</span>
+        <h3>Fluxo de validação</h3>
+        <div class="pipeline-step"><span>01</span><div><b>Ler e verificar colunas</b><small>distrito, ano, mês, NDVI, pixels, chuva, VV, VH, nº imagens</small></div><i class="bi bi-check-circle"></i></div>
+        <div class="pipeline-step"><span>02</span><div><b>Verificar qualidade</b><small>Distrito Búzi/Muanza, mês 1–12, intervalos de NDVI, chuva e radar, duplicados</small></div><i class="bi bi-shield-check"></i></div>
+        <div class="pipeline-step"><span>03</span><div><b>Juntar ao dataset</b><small>Chave distrito + ano + mês; aviso se faltarem meses (o modelo precisa de 3 meses anteriores)</small></div><i class="bi bi-intersect"></i></div>
+        <div class="pipeline-step"><span>04</span><div><b>Calcular anomalias e prever</b><small>z-scores com as normais do modelo activo; previsão LightGBM</small></div><i class="bi bi-sliders"></i></div>
+      </article>
+    </div>
+    <article class="panel validation-card">
+      <div class="panel-heading"><div><span class="section-number">03 / RELATÓRIO</span><h3>Resultado</h3></div></div>
+      <div id="validationResult" class="empty-validation"><i class="bi bi-file-earmark-check"></i><span>Seleccione um ficheiro e clique em «Validar / importar».</span></div>
+    </article>
+  }
+  <div class="panel sources-metadata">
+    <span class="section-number">PROVENIÊNCIA / DATASET</span>
+    <h3>Esquema do dataset (dados_unidos.csv)</h3>
+    <div class="table-responsive">
+      <table class="table provenance-table">
+        <thead><tr><th>Coluna</th><th>Fonte</th><th>Descrição</th></tr></thead>
+        <tbody>
+          <tr><td>distrito, ano, mes</td><td>—</td><td>Chave: Buzi/Muanza, ano, mês (1–12)</td></tr>
+          <tr><td>ndvi_medio, pixels_validos, n_imagens_s2</td><td>Sentinel-2 SR</td><td>NDVI médio mensal (vazio se não houver imagens limpas) e qualidade</td></tr>
+          <tr><td>chuva_mm</td><td>CHIRPS diário</td><td>Chuva total do mês</td></tr>
+          <tr><td>vv_medio, vh_medio, n_imagens_s1</td><td>Sentinel-1 GRD</td><td>Retrodifusão média (dB) nas polarizações VV e VH</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small-footnote" id="datasetInfo">—</p>
+  </div>
+</section>
