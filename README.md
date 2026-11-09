@@ -5,41 +5,8 @@ Observatório web em **ASP.NET Core MVC** integrado com o **modelo treinado do P
 (**ML.NET 5 + LightGBM**), com dados mensais reais extraídos no Google Earth Engine
 (Sentinel-2 NDVI, CHIRPS e Sentinel-1 VV/VH) para 2018–2025.
 
-```
-┌──────────────────────┐   REST + cookie   ┌──────────────────────────────────────────────┐
-│  Browser (UI)        │ ────────────────► │  TerraSinal.Web (ASP.NET Core 8)              │
-│  Bootstrap, Chart.js │                   │  ObservatorioApiController                    │
-│  Leaflet             │ ◄──────────────── │  ├─ RepositorioDados   (dados_unidos.csv)     │
-└──────────────────────┘                   │  ├─ ServicoModeloStress                       │
-                                           │  │    └─ Vegetation.ML (PrevisorStress,       │
-                                           │  │         Treinador, LightGBM .zip)          │
-                                           │  └─ EF Core + Identity → MySQL (histórico)    │
-                                           └──────────────────────────────────────────────┘
-```
-
 O modelo corre **dentro do processo .NET** (sem serviço Python): o projecto web referencia a
 biblioteca `Vegetation.ML` e carrega `modelo_lightgbm.zip` + `normais.json` + `metricas.json`.
-
----
-
-### Estrutura
-
-```
-TerraSinal.sln
-Vegetation.ML/              Biblioteca de IA do ProjetoSeca (features, treino, previsão)
-Vegetation.ML.Treino/       Consola para treinar fora da web (igual ao ProjetoSeca)
-aspnet-mvc-starter/         Site ASP.NET Core MVC + Web API
-  ModeloIA/modelo/          Modelo treinado entregue (LightGBM activo, logística, normais, métricas)
-  ModeloIA/dados/           dados_unidos.csv original (Earth Engine)
-  App_Data/                 Criada no 1.º arranque: modelo activo, dataset actual, versões arquivadas
-  Services/                 RepositorioDados, ServicoModeloStress
-  Controllers/              ObservatorioApiController, AccountController, HomeController
-  Data/Migrations/          InitialIdentity + HistoricoPrevisoes (tabela RegistosPrevisao)
-earth-engine/               Script GEE de extracção dos dados
-investigacao/dados/         CSVs intermédios do ProjetoSeca (classes, features)
-legacy/                     Agente Python sintético, protótipo HTML (já não usados)
-docs/
-```
 
 ### Requisitos
 
@@ -48,56 +15,8 @@ docs/
 - **MySQL 8** (ou MariaDB) para o login e o histórico.
 - Em Linux/macOS o LightGBM precisa do OpenMP (`sudo apt install libgomp1` / `brew install libomp`).
 
-### 1. Base de dados
 
-```sql
-CREATE DATABASE terrasinal CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'terrasinal'@'localhost' IDENTIFIED BY 'defina-uma-senha-local';
-GRANT ALL PRIVILEGES ON terrasinal.* TO 'terrasinal'@'localhost';
-FLUSH PRIVILEGES;
-```
-
-Antes de iniciar, configure a senha do MySQL sem a publicar no Git. A forma recomendada é usar uma
-variável de ambiente (o separador duplo `__` representa níveis de configuração do ASP.NET Core):
-
-```bash
-export ConnectionStrings__DefaultConnection='Server=localhost;Port=3306;Database=terrasinal;User=terrasinal;Password=defina-uma-senha-local;'
-```
-
-No Windows PowerShell:
-
-```powershell
-$env:ConnectionStrings__DefaultConnection = 'Server=localhost;Port=3306;Database=terrasinal;User=terrasinal;Password=defina-uma-senha-local;'
-```
-
-Também é possível copiar `aspnet-mvc-starter/appsettings.Development.example.json` para
-`appsettings.Development.json` e preencher a senha. Esse ficheiro local é ignorado pelo Git.
-
-No arranque a aplicação aplica as migrações (Identity + `RegistosPrevisao`) e cria as contas demo.
-Se usar MariaDB, defina a versão em `appsettings.json` → `"Database": { "ServerVersion": "10.11.6-mariadb" }`.
-
-### 2. Executar
-
-```bash
-# Linux/macOS
-./start-all.sh
-# Windows (PowerShell)
-.\start-all.ps1
-# ou manualmente
-dotnet build TerraSinal.sln
-cd aspnet-mvc-starter && dotnet run --urls "http://localhost:5050"
-```
-
-Abrir `http://localhost:5050/` e iniciar sessão:
-
-| Perfil | Email | Palavra-passe | Pode |
-|---|---|---|---|
-| Administrador | `admin@terrasinal.mz` | `Admin@2026` | tudo + importar dados + retreinar |
-| Investigador | `investigador@terrasinal.mz` | `Invest@2026` | consultar, prever, registar análises |
-
-No Visual Studio: abrir `TerraSinal.sln`, definir `TerraSinal.Web` como projecto de arranque e F5.
-
-### 3. Como o modelo é usado
+### Como o modelo é usado
 
 | Onde | O que faz |
 |---|---|
