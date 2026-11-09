@@ -12,9 +12,9 @@ var options = new WebApplicationOptions
 
 var builder = WebApplication.CreateBuilder(options);
 
-var builder = WebApplication.CreateBuilder(args);
+ builder = WebApplication.CreateBuilder(args);
 
-// ------------------------------------------------------------------ MySQL / Identity
+// ---------- MySQL / Identity
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Falta ConnectionStrings:DefaultConnection no appsettings.json.");
 var serverVersion = ResolverVersaoServidor(builder.Configuration, connectionString);
