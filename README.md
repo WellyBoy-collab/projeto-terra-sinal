@@ -26,30 +26,3 @@ biblioteca `Vegetation.ML` e carrega `modelo_lightgbm.zip` + `normais.json` + `m
 | **Dados e importação** (Admin) | Importar CSV no formato `dados_unidos.csv` (validação, cópia de segurança, junção por distrito+ano+mês) |
 | **Retreinar** (Admin) | Corre o `Treinador` do ProjetoSeca com o dataset actual; o modelo anterior fica em `App_Data/arquivo/<versão>` |
 | **Histórico** | Previsões e análises gravadas em MySQL com versão do modelo, entradas, utilizador e nota |
-
-Entradas do modelo (iguais ao ProjetoSeca): distrito, mês (seno/cosseno), z da chuva do mês e dos 3 meses
-anteriores, z de VV e VH. As anomalias usam as normais do modelo activo (só anos de treino).
-Para prever um mês pelo dataset são precisos os **3 meses anteriores**.
-
-### 4. Integrar um modelo novo treinado fora da web
-
-```bash
-dotnet run --project Vegetation.ML.Treino -- aspnet-mvc-starter/ModeloIA/dados/dados_unidos.csv novo_modelo
-```
-
-Copiar os 4 ficheiros de `novo_modelo/` (`modelo_lightgbm.zip`, `modelo_logistica.zip`, `normais.json`,
-`metricas.json`) para `aspnet-mvc-starter/App_Data/modelo/` (modelo activo) e reiniciar o site —
-ou para `ModeloIA/modelo/` e apagar `App_Data/` para recomeçar do zero.
-
-### 5. API
-
-Ver `docs/API_CONTRACTS.md`. Todas as rotas `/api/*` exigem sessão (401 em JSON se não houver);
-os `POST` exigem o cabeçalho `RequestVerificationToken` (a interface envia-o automaticamente).
-
-### Avisos de rigor científico
-
-- A classe "real" vem do z-score do NDVI (limiares −0,5 e −1,0 fixados antes do teste).
-- O teste tem poucos meses de stress (1 moderado, 7 severos em 2024–2025): as métricas por classe são
-  instáveis. O LightGBM foi escolhido pelo F1-macro (0,536) e não pela exatidão.
-- Retreinar com anos incompletos muda a divisão treino/teste (últimos 2 anos = teste) e as normais.
-- O sistema apoia especialistas: as recomendações exigem validação humana.
