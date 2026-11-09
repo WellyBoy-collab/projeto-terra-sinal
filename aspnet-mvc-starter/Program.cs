@@ -5,6 +5,13 @@ using TerraSinal.Web.Data;
 using TerraSinal.Web.Models;
 using TerraSinal.Web.Services;
 
+var options = new WebApplicationOptions
+{
+    ContentRootPath = Directory.GetCurrentDirectory()
+};
+
+var builder = WebApplication.CreateBuilder(options);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ------------------------------------------------------------------ MySQL / Identity
